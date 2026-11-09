@@ -31,13 +31,11 @@ jobs:
         run: npm install
         
       - name: Build the project
-        # Check package.json for the exact build command (might be 'build' instead of 'bundle')
         run: npm run bundle 
         
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Change './dist' to wherever the final index.html and bundle get generated (could be 'build', 'public', or 'out')
           path: './dist'
 
   deploy:
