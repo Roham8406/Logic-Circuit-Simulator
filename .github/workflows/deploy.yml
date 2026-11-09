@@ -37,17 +37,11 @@ jobs:
         run: |
           mkdir deploy_target
           
-          # Copy the core asset folders
-          cp -r simulator/css deploy_target/
-          cp -r simulator/img deploy_target/
-          cp -r simulator/lib deploy_target/
+          # Keep the "simulator" folder intact because the HTML expects assets to be inside it
+          cp -r simulator deploy_target/
           
-          # The template expects the JS bundle and favicon in the same folder as index.html
-          cp simulator/lib/bundle* deploy_target/ || true
-          cp simulator/img/favicon.svg deploy_target/ || true
-          
-          # Convert the template into the final index.html and remove the {{SUFFIX}} placeholder
-          sed 's/{{SUFFIX}}//g' simulator/html/index-template.html > deploy_target/index.html
+          # Generate index.html at the root and remove the placeholders
+          sed -e 's/{{SUFFIX}}//g' -e 's/{{VERSION}}/1/g' simulator/html/index-template.html > deploy_target/index.html
         
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
